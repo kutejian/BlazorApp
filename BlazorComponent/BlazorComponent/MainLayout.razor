@@ -1,0 +1,18 @@
+﻿@inherits LayoutComponentBase
+
+<main> 
+    <div>
+        <CascadingValue Value="@student">
+                @Body 
+        </CascadingValue>
+    </div>
+</main>
+
+@code{
+    public Student student = new()
+        {
+            Id = 1,
+            Name = "yaokang"
+        };
+
+}

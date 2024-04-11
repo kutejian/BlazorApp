@@ -1,0 +1,38 @@
+﻿<h3>@buttonClickMessage</h3>
+
+
+<button @onclick="@HandleButtonClick">
+    //当点击的时候触发HandleButtonClick
+</button>
+
+@code {
+    [Parameter]
+    public string? buttonClickMessage { get; set; }
+
+    public ButtonClickEventArgs? ButtonClickEventArgsName { get; set; }
+
+    //一般使用这个表示会返回什么数据给父组件 或者告诉父组件什么事情之类的
+    //表示接收一个ButtonClickEventArgs类型的事件  
+    [Parameter]
+    public EventCallback<ButtonClickEventArgs> OnButtonClick { get; set; }
+
+    private async Task HandleButtonClick()
+    {
+        ButtonClickEventArgs args = new ButtonClickEventArgs(buttonClickMessage);
+
+        args.ButtonName = "ssw";
+        //这个就是表示 返回给父组件触发的方法，也就是你在父组件上传过来的方法，返回的数据要是你定义的ButtonClickEventArgs这个类型数据
+        await OnButtonClick.InvokeAsync(args);
+    }
+
+    //自定义事件
+    public class ButtonClickEventArgs
+    {
+        public string ButtonName { get; set; }
+
+        public ButtonClickEventArgs(string buttonName)
+        {
+            ButtonName = buttonName;
+        }
+    }
+}

@@ -1,0 +1,20 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+<StudentComponent Title="游戏" @attributes="AdditionAttributes">
+    <ChitContent>
+        点击
+        <a href="https://baidu.com">百度</a>
+    </ChitContent>
+</StudentComponent>
+
+
+
+
+@code{
+    public Dictionary<string, object> AdditionAttributes = new()
+    {
+        {"src","img/新建项目 (1).png"},
+        {"alt","bbb"}
+    };
+}

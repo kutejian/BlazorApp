@@ -1,0 +1,82 @@
+﻿@page "/Event"
+
+<PageTitle>Event Handler 1</PageTitle>
+<h2>最简单的使用 @headingValue</h2>
+<p>
+    <button @onclick="@(e => UpdateHeading(1))">
+        Update heading
+    </button>
+</p>
+<p>
+    <label>
+        <input type="checkbox" @onchange="CheckChanged" />
+        @checkedMessage
+    </label>
+</p>
+
+
+<p>内置事件参数 MouseEventArgs 这个就是事件参数 @mousePointerMessage</p>
+@for (var i = 0; i < 4; i++)
+{
+    <p>
+        <button @onclick="ReportPointerLocation">
+            Where's my mouse pointer for this button?
+        </button>
+    </p>
+}
+
+<p>自定义事件参数</p>
+<EventComponent OnButtonClick="HandleButtonClick" buttonClickMessage="@buttonClickMessage"> </EventComponent>
+
+
+
+
+<h1>这个是使用Lambda表达式表达怎么使用事件 @heading</h1>
+@foreach (var buttonNumber in Enumerable.Range(1, 3))
+{
+    <p>
+        <button @onclick="@(e => UpdateHeading(e, buttonNumber))">
+            Button #@buttonNumber
+        </button>
+    </p>
+}
+
+
+@code {
+    private string headingValue = "Initial heading";
+    private string checkedMessage = "Not changed yet";
+
+    private void UpdateHeading(int a)
+    {
+        headingValue = $"New heading ({DateTime.Now}) {a}";
+    }
+    private void CheckChanged()
+    {
+        checkedMessage = $"Last changed at {DateTime.Now}";
+    }
+
+    //内置事件参数 MouseEventArgs 这个就是事件参数
+    private string? mousePointerMessage;
+    private void ReportPointerLocation(MouseEventArgs e)
+    {
+        mousePointerMessage = $"Mouse coordinates: {e.ScreenX}:{e.ScreenY}";
+    }
+    
+    //自定义事件 和 使用EventCallback<TValue>
+    private string buttonClickMessage;
+    private void HandleButtonClick(Component.EventComponent.ButtonClickEventArgs args)
+    {
+        //接收从 子组件返回过来的数据
+        // 将事件信息输出到页面上
+        buttonClickMessage = $"Button '{args.ButtonName}' clicked!";
+    }
+
+
+
+    //这个是使用Lambda表达式表达怎么使用事件
+    private string heading = "Select a button to learn its position";
+    private void UpdateHeading(MouseEventArgs e, int buttonNumber)
+    {
+        heading = $"Selected #{buttonNumber} at {e.ClientX}:{e.ClientY}";
+    }
+}

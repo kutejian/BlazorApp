@@ -1,0 +1,108 @@
+﻿@using BlazorComponent.Data
+
+<h3>StudentComponent</h3>
+
+<div>
+    <h1>标题:@Title</h1>
+    <h2>@Student.Id</h2>
+    <h3>@Student.Name</h3>
+    <img  src="img/新建项目 (1).png" />
+    <img  @attributes="AdditionAttributes"/>
+    <p>
+        @ChitContent
+    </p>
+</div>
+
+@code {
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionAttributes { get; set; }
+
+    [CascadingParameter]
+    public Student? Student { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChitContent{ get; set; }
+
+}
+@code {
+
+    //在给组件传参数 给属性赋值的时候可以用这个，重写类   
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+
+        //表示获取使用的组件的类 传过来的参数值
+        base.SetParametersAsync(parameters);
+        //直接使用你这类里的属性名称 可以进行断点看到属性里面的值内容
+        if (Title =="aa")
+        {
+            // 如果参数Value小于0，为它设置一个默认值
+            Console.WriteLine("参数Value小于0，已重置为0");
+        }
+        else
+        {
+            Console.WriteLine($"参数Value设置为: {Title}");
+        }
+        Title = "aa";
+        return Task.CompletedTask;
+    }
+
+
+    // 当组件在首次初始化时调用
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("OnInitializedAsync");
+        await base.OnInitializedAsync();
+    }
+
+    // 同步版本的初始化方法，当组件在首次初始化时调用
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("OnInitialized");
+        base.OnInitialized();
+    }
+
+    // 在设置组件参数后，但在渲染前被调用
+    protected override async Task OnParametersSetAsync()
+    {
+        Console.WriteLine("OnParametersSetAsync");
+        await base.OnParametersSetAsync();
+    }
+
+    // 同步版本的设置参数后的方法，也是在渲染前调用
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine("OnParametersSet");
+        base.OnParametersSet();
+    }
+
+    // 在每次尝试渲染组件前调用，决定是否进行渲染
+    protected override bool ShouldRender()
+    {
+        Console.WriteLine("ShouldRender");
+        return base.ShouldRender();
+    }
+
+    // 渲染完成后同步调用，第一个参数表示是否为首次渲染
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine($"OnAfterRender, firstRender: {firstRender}");
+        base.OnAfterRender(firstRender);
+    }
+
+    // 渲染完成后异步调用，第一个参数表示是否为首次渲染
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        Console.WriteLine($"OnAfterRenderAsync, firstRender: {firstRender}");
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // 组件被移除时调用，用于资源的清理
+    public void Dispose()
+    {
+        Console.WriteLine("Dispose");
+        // 清理代码在这里
+    }
+}
